@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TryCore.Models;
@@ -5,6 +6,7 @@ using TryCore.Persistence;
 
 namespace TryCore.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class AdminModel : PageModel
     {
         public ProductDbContext _db { get; set; }
