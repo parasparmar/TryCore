@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TryCore.Persistence;
 
@@ -10,6 +12,13 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:AppDataConnection"]);
 });
+builder.Services.AddDbContext<IdentityDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:IdentityConnection"]
+        , o => o.MigrationsAssembly("TryCore"));
+});
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<IdentityDbContext>();
+
 builder.Services.AddHttpsRedirection(opts =>
 {
     opts.HttpsPort = 44350;
