@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using TryCore.Persistence;
+using TryCore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +17,12 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 builder.Services.AddDbContext<IdentityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:IdentityConnection"]
-        , o => o.MigrationsAssembly("TryCore"));
+        , options => options.MigrationsAssembly("TryCore"));
 });
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<IdentityDbContext>();
 
-builder.Services.AddHttpsRedirection(opts =>
-{
-    opts.HttpsPort = 44350;
-});
+builder.Services.AddHttpsRedirection(options => { options.HttpsPort = 44350; });
+builder.Services.AddScoped<IEmailSender, ConsoleEmailSender>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<IdentityDbContext>();
 
 var app = builder.Build();
 
@@ -31,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    //app.UseHsts();
 }
 
 app.UseHttpsRedirection();
