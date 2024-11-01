@@ -6,19 +6,12 @@ using TryCore.Persistence;
 using TryCore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ProductDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:AppDataConnection"]);
-});
-builder.Services.AddDbContext<IdentityDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:IdentityConnection"]
-        , options => options.MigrationsAssembly("TryCore"));
-});
+builder.Services.AddDatabaseServices(configuration);
+
 
 builder.Services.AddHttpsRedirection(options => { options.HttpsPort = 44350; });
 builder.Services.AddScoped<IEmailSender, ConsoleEmailSender>();
