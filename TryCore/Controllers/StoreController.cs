@@ -4,7 +4,7 @@ using TryCore.Persistence;
 
 namespace TryCore.Controllers
 {
-    [Authorize]
+    
     public class StoreController : Controller
     {
         private readonly ILogger<StoreController> _logger;

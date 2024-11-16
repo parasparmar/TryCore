@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Web;
 
 namespace TryCore.Services
